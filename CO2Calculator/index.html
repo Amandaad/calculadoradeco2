@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Emissões de CO2</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌍 Calculadora de Emissões de CO2</h1>
+            <p class="subtitle">Calcule sua pegada de carbono e contribua para um planeta melhor</p>
+            <div class="header-controls">
+                <button id="darkModeBtn" class="btn-icon" title="Modo Escuro">🌙</button>
+                <button id="historyBtn" class="btn-icon" title="Histórico">📋</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Abas de Navegação -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="transport">🚗 Transporte</button>
+                <button class="tab-btn" data-tab="energy">⚡ Energia</button>
+                <button class="tab-btn" data-tab="food">🍽️ Alimentação</button>
+                <button class="tab-btn" data-tab="waste">♻️ Resíduos</button>
+                <button class="tab-btn" data-tab="results">📊 Resultados</button>
+            </div>
+
+            <!-- TAB 1: TRANSPORTE -->
+            <div id="transport" class="tab-content active">
+                <h2>Transporte</h2>
+                <div class="form-section">
+                    <label>
+                        <span>Carro pessoal (km/mês):</span>
+                        <input type="number" id="carKm" placeholder="0" min="0" step="10">
+                    </label>
+
+                    <label>
+                        <span>Tipo de combustível</span>
+                        <select id="fuelType">
+                            <option value="gasolina">Gasolina</option>
+                            <option value="diesel">Diesel</option>
+                            <option value="eletrico">Elétrico</option>
+                            <option value="hibrido">Híbrido</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>Consumo do carro (km/litro):</span>
+                        <input type="number" id="carEfficiency" placeholder="10" min="1" step="0.5" value="10">
+                    </label>
+
+                    <label>
+                        <span>Voos nacionais (número/ano):</span>
+                        <input type="number" id="domesticFlights" placeholder="0" min="0" step="1">
+                    </label>
+
+                    <label>
+                        <span>Voos internacionais (número/ano):</span>
+                        <input type="number" id="internationalFlights" placeholder="0" min="0" step="1">
+                    </label>
+
+                    <label>
+                        <span>Transporte público (km/mês):</span>
+                        <input type="number" id="publicTransport" placeholder="0" min="0" step="10">
+                    </label>
+
+                    <label>
+                        <span>Bicicleta/A pé (km/mês):</span>
+                        <input type="number" id="bicycle" placeholder="0" min="0" step="10">
+                    </label>
+                </div>
+            </div>
+
+            <!-- TAB 2: ENERGIA -->
+            <div id="energy" class="tab-content">
+                <h2>Energia</h2>
+                <div class="form-section">
+                    <label>
+                        <span>Eletricidade (kWh/mês):</span>
+                        <input type="number" id="electricity" placeholder="0" min="0" step="10">
+                    </label>
+
+                    <label>
+                        <span>Gás natural (m³/mês):</span>
+                        <input type="number" id="naturalGas" placeholder="0" min="0" step="1">
+                    </label>
+
+                    <label>
+                        <span>Energia renovável (%):</span>
+                        <input type="number" id="renewablePercent" placeholder="0" min="0" max="100" step="5" value="0">
+                    </label>
+
+                    <label>
+                        <span>Aquecimento (selecione o tipo):</span>
+                        <select id="heatingType">
+                            <option value="eletrico">Elétrico</option>
+                            <option value="gas">Gás Natural</option>
+                            <option value="oleo">Óleo Combustível</option>
+                            <option value="biomassa">Biomassa</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>Litros de combustível/mês (aquecimento):</span>
+                        <input type="number" id="heatingFuel" placeholder="0" min="0" step="1">
+                    </label>
+                </div>
+            </div>
+
+            <!-- TAB 3: ALIMENTAÇÃO -->
+            <div id="food" class="tab-content">
+                <h2>Alimentação</h2>
+                <div class="form-section">
+                    <label>
+                        <span>Tipo de dieta:</span>
+                        <select id="dietType">
+                            <option value="vegan">Vegana</option>
+                            <option value="vegetarian">Vegetariana</option>
+                            <option value="pescatarian">Pescetariana</option>
+                            <option value="mixed">Mista Baixa Carne</option>
+                            <option value="high-meat">Alta Carne</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        <span>Carne vermelha (kg/mês):</span>
+                        <input type="number" id="redMeat" placeholder="0" min="0" step="0.5">
+                    </label>
+
+                    <label>
+                        <span>Frango (kg/mês):</span>
+                        <input type="number" id="chicken" placeholder="0" min="0" step="0.5">
+                    </label>
+
+                    <label>
+                        <span>Peixe (kg/mês):</span>
+                        <input type="number" id="fish" placeholder="0" min="0" step="0.5">
+                    </label>
+
+                    <label>
+                        <span>Laticínios (kg/mês):</span>
+                        <input type="number" id="dairy" placeholder="0" min="0" step="0.5">
+                    </label>
+
+                    <label>
+                        <span>Alimentos locais (selecione frequência):</span>
+                        <select id="localFood">
+                            <option value="always">Sempre</option>
+                            <option value="sometimes">Às vezes</option>
+                            <option value="rarely">Raramente</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+            <!-- TAB 4: RESÍDUOS -->
+            <div id="waste" class="tab-content">
+                <h2>Resíduos</h2>
+                <div class="form-section">
+                    <label>
+                        <span>Lixo total (kg/mês):</span>
+                        <input type="number" id="totalWaste" placeholder="0" min="0" step="1">
+                    </label>
+
+                    <label>
+                        <span>Taxa de reciclagem (%):</span>
+                        <input type="number" id="recyclingRate" placeholder="0" min="0" max="100" step="5">
+                    </label>
+
+                    <label>
+                        <span>Compostagem (kg/mês):</span>
+                        <input type="number" id="composting" placeholder="0" min="0" step="1">
+                    </label>
+
+                    <label>
+                        <span>Roupas novas (kg/ano):</span>
+                        <input type="number" id="newClothes" placeholder="0" min="0" step="0.5">
+                    </label>
+
+                    <label>
+                        <span>Eletrônicos descartados (kg/ano):</span>
+                        <input type="number" id="electronics" placeholder="0" min="0" step="0.1">
+                    </label>
+                </div>
+            </div>
+
+            <!-- TAB 5: RESULTADOS -->
+            <div id="results" class="tab-content">
+                <h2>Seu Resultado de Emissões</h2>
+                <div class="results-container">
+                    <div class="result-card total">
+                        <h3>Total Anual</h3>
+                        <div class="big-number" id="totalEmissions">0</div>
+                        <p>kg CO2/ano</p>
+                    </div>
+
+                    <div class="result-card monthly">
+                        <h3>Por Mês</h3>
+                        <div class="big-number" id="monthlyEmissions">0</div>
+                        <p>kg CO2/mês</p>
+                    </div>
+
+                    <div class="result-card daily">
+                        <h3>Por Dia</h3>
+                        <div class="big-number" id="dailyEmissions">0</div>
+                        <p>kg CO2/dia</p>
+                    </div>
+                </div>
+
+                <div class="comparison-section">
+                    <h3>Comparação com Média Nacional</h3>
+                    <div class="comparison-chart">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                    <p id="comparisonText" class="comparison-text"></p>
+                </div>
+
+                <div class="breakdown-section">
+                    <h3>Detalhamento por Categoria</h3>
+                    <div class="chart-container">
+                        <canvas id="breakdownChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="exportBtn" class="btn-primary">📄 Exportar como PDF</button>
+                    <button id="resetBtn" class="btn-secondary">🔄 Limpar Tudo</button>
+                    <button id="saveBtn" class="btn-success">💾 Salvar no Histórico</button>
+                </div>
+
+                <div class="tips-section">
+                    <h3>💡 Dicas para Reduzir sua Pegada de Carbono:</h3>
+                    <ul id="tips"></ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Histórico -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 Histórico de Cálculos</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div id="historyList" class="history-list"></div>
+            <div class="modal-footer">
+                <button id="clearHistoryBtn" class="btn-danger">Limpar Histórico</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Calculadora de CO2 | Feito com 💚 pelo planeta</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
